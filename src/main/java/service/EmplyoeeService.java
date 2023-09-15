@@ -21,7 +21,7 @@ public class EmplyoeeService {
 		list.add(emp1);
 		Employee emp2= new Employee(2,"vikram","singh","vikram","123",false,20000);
 		list.add(emp2);
-		System.out.println(list);
+		//System.out.println(list);
 	}
 	public List<Employee> getEmployeeList() {
 		return list;
@@ -33,5 +33,34 @@ public class EmplyoeeService {
 			return userEmployee;
 		
 		return null;
+	}
+	public void addData(Employee e) {
+		
+		
+		list.add(e);
+		
+	}
+	public void updateUserEmployee(Employee employee) {
+		
+	int id=employee.getId();
+	Employee employee2 = list.stream().filter(a->a.getId()==id).findFirst().orElse(null);
+	employee2.setFirstname(employee.getFirstname());
+	employee2.setLastname(employee.getLastname());
+	employee2.setUsername(employee.getUsername());
+	employee2.setPassword(employee.getPassword());
+	employee2.setSalary(employee.getSalary());
+	employee2.setIsadmin(employee.isIsadmin());
+	System.out.println(list);
+	
+	
+}
+	public Employee editEmployee(int id) {
+		Employee employee2 = list.stream().filter(a->a.getId()==id).findFirst().orElse(null);
+		return employee2;
+	}
+	public void delete(int id) {
+		Employee employee2 = list.stream().filter(a->a.getId()==id).findFirst().orElse(null);
+		list.remove(employee2) ; 
+		
 	}
 }

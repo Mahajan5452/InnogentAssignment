@@ -36,7 +36,7 @@ public class loginclt extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect(request.getContextPath()+"/login.jsp");
 	}
 
 	/**
@@ -44,17 +44,17 @@ public class loginclt extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	   String typeString= request.getParameter("submit");
-	   System.out.println(typeString);
+	  // System.out.println(typeString);
 	   String userName= request.getParameter("username");
 		String password=request.getParameter("password");
-		System.out.println(userName+" "+password);
+		//System.out.println(userName+" "+password);
 	  if(typeString.equals("login")) {
 		Employee emp=service.login(userName,password);
 		if(emp!=null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("emp", emp);
 			requestDispatcher=request.getRequestDispatcher("home.jsp");
-			request.setAttribute("list", service.getEmployeeList());
+			session.setAttribute("list", service.getEmployeeList());
 			requestDispatcher.include(request, response);
 		}else {
 			request.setAttribute("msg", "Invalid Credentials");
