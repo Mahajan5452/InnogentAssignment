@@ -53,7 +53,7 @@ public class UpdateData extends HttpServlet {
 	    String lname=request.getParameter("lastName");
 	    String userName= request.getParameter("userName");
 		String password=request.getParameter("password");
-		boolean isadmin=true;
+		boolean isadmin= Boolean.parseBoolean(request.getParameter("isAdmin"));
 		double salary=Double.parseDouble(request.getParameter("salary"));
 		System.out.println("hi this is admin update");
 		System.out.println(isadmin);
