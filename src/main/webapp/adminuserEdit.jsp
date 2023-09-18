@@ -1,3 +1,4 @@
+<%@page import="service.EmplyoeeService"%>
 <%@page import="Entity.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,8 +9,25 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
- <%! Employee emp;%>
-<% emp=(Employee)request.getAttribute("emp"); %>
+ <%! Employee emp1;%>
+<% emp1=(Employee)session.getAttribute("emp");
+String id=request.getParameter("id");
+int ids= Integer.parseInt(id);
+%>
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+	EmplyoeeService service= new EmplyoeeService();
+	Employee emp =service.editEmployee(ids);
+
+	if(emp1==null)
+	{
+		 RequestDispatcher rDispatcher= request.getRequestDispatcher("/login.jsp");
+		   rDispatcher.forward(request, response);
+	}
+%>
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -39,9 +57,8 @@
   <% if(emp.isIsadmin()){%>              
                 <div class="form-group">
 						<label for="isAdmin">Is Admin:</label> <input type="radio"
-							id="isAdmin" name="isAdmin" value="true" checked disabled> <label
-							for="notAdmin"> Not Admin:</label> <input type="radio"
-							id="isAdmin" name="isAdmin" value="false" disabled>
+							id="isAdmin" name="isAdmin" value="true" checked disabled> 
+							
 					</div><%}else{ %>
 					<div class="form-group">
 						<label for="isAdmin">Is Admin:</label> <input type="radio"

@@ -13,15 +13,25 @@
 </head>
 <body>
 
- <%! Employee emp;%>
+ <%! Employee emp;
+ %>
  
  <%!List<Employee>list; %>
  
   <% 
-  if(session==null){
-	  response.sendRedirect("login.jsp");
-  }
+  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  response.setHeader("Pragma", "no-cache");
+  response.setDateHeader("Expires", 0);
+  
   emp=(Employee)session.getAttribute("emp"); 
+
+  if(emp==null){
+	  
+	  
+	  RequestDispatcher rDispatcher= request.getRequestDispatcher("/login.jsp");
+	   rDispatcher.forward(request, response);
+  }
+   
     list= (List<Employee> )session.getAttribute("list");
   if(emp.isIsadmin())
   {
@@ -49,11 +59,12 @@
            <td><%=list.get(i).isIsadmin() %></td>
            <td><%=list.get(i).getSalary() %></td>
               
-          <td><a class="btn btn-primary" href="UpdateData?id=<%=list.get(i).getId() %>" role="button" >update</a></td>
+   <%--        <td><a class="btn btn-primary" href="UpdateData?id=<%=list.get(i).getId() %>" role="button" >update</a></td> --%>
+          <td><a class="btn btn-primary" href="adminuserEdit.jsp?id=<%=list.get(i).getId() %>" role="button" >update</a></td>
           <td>
                            
                             <% if (!list.get(i).isIsadmin()) { %>
-                                <a class="btn btn-danger href="DeleteClt?id=<%= list.get(i).getId()%>" role="button">delete</a>
+                                <a class="btn btn-danger" href="DeleteClt?id=<%= list.get(i).getId()%>" role="button">delete</a>
                             <% }else{ %>
                             <button type="button" class="btn btn-danger" data-toggle="modal"
 		                     data-target="#staticBackdrop">delete</button>
@@ -86,7 +97,11 @@
 				
 		</div>
 	 </div>
-  <% }else {%>
+  <% }else {
+	  if(session == null){
+		    response.sendRedirect("login.jsp");
+		    return; }
+  %>
   <div class="container mt-4">
     <div class="row">
         <div class="col-md-6">
@@ -100,6 +115,9 @@
                         <li class="list-group-item">Is Admin: <span class="text-success"><%=emp.isIsadmin() %></span></li>
                         <li class="list-group-item">Salary: <span class="text-success"><%=emp.getSalary() %></span></li>
                     </ul>
+                     <div align="right">
+           <a class="btn btn-danger" href="logoutClt" role="button">Logout</a>
+           </div>
                 </div>
                 <a href="userEdit.jsp" class="btn btn-primary" >Edit</a>
             </div>

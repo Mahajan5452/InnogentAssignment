@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,11 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import Entity.Employee;
 import service.EmplyoeeService;
-import service.intiserv;
 
 /**
  * Servlet implementation class UpdateData
@@ -21,7 +18,7 @@ import service.intiserv;
 @WebServlet("/UpdateData")
 public class UpdateData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	EmplyoeeService service = new EmplyoeeService();   
+	EmplyoeeService service = new EmplyoeeService();
 	RequestDispatcher requestDispatcher;
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,35 +31,41 @@ public class UpdateData extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id= Integer.parseInt(request.getParameter("id"));
 	Employee employee=	service.editEmployee(id);
 	request.setAttribute("emp", employee);
-	requestDispatcher=request.getRequestDispatcher("adminuserEdit.jsp");
-	requestDispatcher.include(request, response);
-		
-	   
+	/*
+	 * requestDispatcher=request.getRequestDispatcher("adminuserEdit.jsp");
+	 * requestDispatcher.include(request, response);
+	 */
+    response.sendRedirect("adminuserEdit.jsp");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String fname=request.getParameter("firstName");
 	    String lname=request.getParameter("lastName");
 	    String userName= request.getParameter("userName");
 		String password=request.getParameter("password");
-		boolean isadmin=Boolean.parseBoolean(request.getParameter("isAdmin"));
+		boolean isadmin=true;
 		double salary=Double.parseDouble(request.getParameter("salary"));
-		
+		System.out.println("hi this is admin update");
+		System.out.println(isadmin);
 		Employee tempEmployee= new Employee(id,fname,lname,userName,password,isadmin,salary);
-		System.out.println(tempEmployee);
+
 		  service.updateUserEmployee(tempEmployee);
-		  requestDispatcher=request.getRequestDispatcher("home.jsp");
-			
-			requestDispatcher.include(request, response);
-		
+			/*
+			 * requestDispatcher=request.getRequestDispatcher("home.jsp");
+			 *
+			 * requestDispatcher.include(request, response);
+			 */
+       response.sendRedirect("home.jsp");
 	}
 
 }

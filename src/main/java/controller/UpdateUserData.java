@@ -32,6 +32,7 @@ public class UpdateUserData extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -40,6 +41,7 @@ public class UpdateUserData extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String fname=request.getParameter("firstName");
@@ -49,10 +51,14 @@ public class UpdateUserData extends HttpServlet {
 		boolean isadmin=Boolean.parseBoolean(request.getParameter("isAdmin"));
 		double salary=Double.parseDouble(request.getParameter("salary"));
 		Employee tempEmployee= new Employee(id,fname,lname,userName,password,isadmin,salary);
+		System.out.println("hiii user data update");
 		  service.updateUserEmployee(tempEmployee);
-		  requestDispatcher=request.getRequestDispatcher("home.jsp");
-			
-			requestDispatcher.include(request, response);
+			/*
+			 * requestDispatcher=request.getRequestDispatcher("home.jsp");
+			 *
+			 * requestDispatcher.include(request, response);
+			 */
+		  response.sendRedirect("home.jsp");
 	}
 
 }
